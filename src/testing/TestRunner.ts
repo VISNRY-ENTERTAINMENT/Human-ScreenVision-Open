@@ -153,6 +153,12 @@ it.skip = (
 }
 
 /**
+ * `test` is an alias for `it` (with `.only` and `.skip`), so tests read the way Playwright users
+ * expect: `test('checkout', async (page) => { ... })`. Same function object, same behaviour.
+ */
+export const test = it
+
+/**
  * Run before every test, with that test's page.
  * @param fn - The hook
  */

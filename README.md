@@ -23,6 +23,40 @@ const result = await page.act({ do: 'click', ref: submit.ref })
 if (!result.ok) console.log(result.summary)
 ```
 
+## Two ways to use it
+
+**As a test framework — the way you use Playwright Test.** Each test gets its own isolated page.
+
+```typescript
+import { test, expect, describe } from 'screenvision'
+
+describe('checkout', () => {
+  test('the Pay button charges the card', async (page) => {
+    await page.goto('http://localhost:3000/cart')
+    await page.getByRole('button', { name: 'Pay' }).click()
+    await page.expect(page.getByText('Payment received')).toBeVisible()
+  })
+})
+```
+
+Run them with `npx screenvision test tests/` (`npx tsx screenvision test tests/` for TypeScript
+files). Options: `--workers`, `--timeout`, `--grep`, `--trace-dir`. `test`, `it`, `describe`,
+`beforeEach`, `afterEach`, `expect`, and `defineFixture` are all exported.
+
+**As an MCP server — the way you use Playwright MCP.** Point any MCP client (Claude Desktop, Claude
+Code, …) at it and the agent drives a real browser through tools:
+
+```json
+{ "mcpServers": { "screenvision": { "command": "npx", "args": ["screenvision-mcp"] } } }
+```
+
+Tools: `browser_navigate`, `browser_snapshot` (a compact, ref-addressable model of the page —
+regions, every available action with a stable `ref`, and blocking conditions), `browser_act` /
+`browser_click` / `browser_fill` (actions that report whether they actually did anything, so a dead
+button comes back as `no-effect` rather than a false success), `browser_get_text`,
+`browser_screenshot`, `browser_close`. The agent snapshots, reads a `ref`, and acts by ref — it never
+invents a CSS selector. Run `npm run build` first; set `SCREENVISION_MCP_HEADLESS=0` to watch it.
+
 ## What makes it different
 
 **`observe()` — a page model an agent can afford.** Landmark regions, every currently

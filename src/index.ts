@@ -15,6 +15,7 @@ export { Runner, writeJUnitReport, type Job, type JobResult, type RunOptions } f
 export {
   describe,
   it,
+  test,
   beforeEach,
   afterEach,
   expect,

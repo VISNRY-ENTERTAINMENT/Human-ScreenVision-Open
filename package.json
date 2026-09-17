@@ -16,7 +16,8 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write src/**/*.ts",
     "install-browsers": "node scripts/install-browsers.js",
-    "test:e2e": "tsx bin/screenvision.mjs test tests/fixtures"
+    "test:e2e": "tsx bin/screenvision.mjs test tests/fixtures",
+    "mcp": "node bin/screenvision-mcp.mjs"
   },
   "dependencies": {
     "glob": "^10.3.0",
@@ -43,7 +44,8 @@
     "vitest": "^1.2.0"
   },
   "bin": {
-    "screenvision": "bin/screenvision.mjs"
+    "screenvision": "bin/screenvision.mjs",
+    "screenvision-mcp": "bin/screenvision-mcp.mjs"
   },
   "files": [
     "dist",
