@@ -1,0 +1,1117 @@
+{
+  "version": 2,
+  "note": "Postconditions are written before any candidate exists. Nothing in this file says HOW to do a task \u2014 only what must be true when it is done, and what must not have happened on the way. That second part is what a UI task has and arithmetic does not: a plan can reach the right end state and still be wrong. Reference solutions live in reference_plans.json, deliberately a separate file, so this one can be shown to a model without showing it the answers. `readyWhen` names the selectors meaning the application has finished loading; scoring a plan against a half-assembled page would measure the fixture's timing rather than the candidate's reasoning.",
+  "tasks": [
+    {
+      "id": "ui-edit-amount",
+      "page": "realapp",
+      "goal": "Open the edit dialog for invoice INV-1001, change its amount to 250, and save.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#inv-body tr",
+        "#cust-list li"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#inv-log",
+            "contains": "Updated INV-1001"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "tr[data-inv='INV-1001']",
+            "contains": "250"
+          }
+        },
+        {
+          "present": {
+            "selector": "#modal-backdrop[hidden]"
+          }
+        }
+      ],
+      "forbidden": {
+        "textAbsent": [
+          "Deleted INV-1001"
+        ]
+      }
+    },
+    {
+      "id": "ui-filter-then-count",
+      "page": "realapp",
+      "goal": "Filter the customer list so that only Orbital Freight is shown.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#inv-body tr",
+        "#cust-list li"
+      ],
+      "postcondition": [
+        {
+          "countOf": {
+            "selector": "#cust-list li",
+            "equals": 1
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#cust-list",
+            "contains": "Orbital Freight"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#cust-count",
+            "contains": "1 of 6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ui-form-gate",
+      "page": "realapp",
+      "goal": "Fill the new-invoice form with name 'Acme Ltd', email 'ops@acme.test' and amount '99', then accept the terms so the submit button becomes usable.",
+      "referenceSteps": 4,
+      "readyWhen": [
+        "#inv-body tr",
+        "#cust-list li"
+      ],
+      "postcondition": [
+        {
+          "inputValue": {
+            "selector": "#f-name",
+            "equals": "Acme Ltd"
+          }
+        },
+        {
+          "inputValue": {
+            "selector": "#f-email",
+            "equals": "ops@acme.test"
+          }
+        },
+        {
+          "inputValue": {
+            "selector": "#f-amount",
+            "equals": "99"
+          }
+        },
+        {
+          "checked": {
+            "selector": "#f-terms",
+            "is": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ui-delete-the-right-row",
+      "page": "realapp",
+      "goal": "Delete invoice INV-1002. Leave every other invoice alone.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#inv-body tr",
+        "#cust-list li"
+      ],
+      "postcondition": [
+        {
+          "absent": {
+            "selector": "tr[data-inv='INV-1002']"
+          }
+        },
+        {
+          "present": {
+            "selector": "tr[data-inv='INV-1001']"
+          }
+        },
+        {
+          "present": {
+            "selector": "tr[data-inv='INV-1003']"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#inv-log",
+            "contains": "Deleted INV-1002"
+          }
+        }
+      ],
+      "forbidden": {
+        "textAbsent": [
+          "Deleted INV-1001",
+          "Deleted INV-1003"
+        ]
+      }
+    },
+    {
+      "id": "ui-cancel-leaves-unchanged",
+      "page": "realapp",
+      "goal": "Open the edit dialog for INV-1004, type 1 into the amount, then cancel without saving. The invoice must keep its original amount of $615.00.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#inv-body tr",
+        "#cust-list li"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#edit-modal[data-inv='INV-1004']"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "tr[data-inv='INV-1004']",
+            "contains": "615.00"
+          }
+        },
+        {
+          "present": {
+            "selector": "#modal-backdrop[hidden]"
+          }
+        }
+      ],
+      "forbidden": {
+        "textAbsent": [
+          "Updated INV-1004"
+        ]
+      }
+    },
+    {
+      "id": "ui-edit-two-invoices",
+      "page": "realapp",
+      "goal": "Set invoice INV-1001 to 100 and invoice INV-1005 to 200, saving each.",
+      "referenceSteps": 6,
+      "readyWhen": [
+        "#inv-body tr",
+        "#cust-list li"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "tr[data-inv='INV-1001']",
+            "contains": "100.00"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "tr[data-inv='INV-1005']",
+            "contains": "200.00"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#inv-log",
+            "contains": "Updated INV-1005"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ui-theme-toggle",
+      "page": "realapp",
+      "goal": "Switch the interface to dark mode using the theme control.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#inv-body tr"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "body[data-theme='dark'], html[data-theme='dark'], .theme-dark"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-rename-and-save",
+      "page": "settingsapp",
+      "goal": "Rename the workspace to 'Southwind' and save the change.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "inputValue": {
+            "selector": "#ws-name",
+            "equals": "Southwind"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Saved Southwind"
+          }
+        },
+        {
+          "present": {
+            "selector": "#dirty-flag[hidden]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-save-is-inert-when-nothing-changed",
+      "page": "settingsapp",
+      "goal": "Without changing any setting, confirm the page is not in an unsaved state: the Save button must still be disabled and no save must have happened.",
+      "referenceSteps": 0,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#save[disabled]"
+          }
+        },
+        {
+          "present": {
+            "selector": "#dirty-flag[hidden]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "equals": "Loaded."
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-invalid-name-blocks-save",
+      "page": "settingsapp",
+      "goal": "Change the workspace name to 'ab' and attempt to save. The name is too short, so nothing must be saved.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#err-ws-name:not([hidden])"
+          }
+        },
+        {
+          "present": {
+            "selector": "#save[disabled]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "equals": "Loaded."
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-fix-invalid-then-save",
+      "page": "settingsapp",
+      "goal": "Change the workspace name to 'ab', notice it is rejected, correct it to 'Eastwind' and save.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#err-ws-name[hidden]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Saved Eastwind"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-discard-restores",
+      "page": "settingsapp",
+      "goal": "Change the workspace name to 'Temporary', then discard the change so the original name comes back.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "inputValue": {
+            "selector": "#ws-name",
+            "equals": "Northwind"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Discarded"
+          }
+        },
+        {
+          "present": {
+            "selector": "#save[disabled]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-timezone-and-view",
+      "page": "settingsapp",
+      "goal": "Set the timezone to Asia/Tokyo, choose the Board default view, and save.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "inputValue": {
+            "selector": "#tz",
+            "equals": "tokyo"
+          }
+        },
+        {
+          "checked": {
+            "selector": "#view-board",
+            "is": true
+          }
+        },
+        {
+          "checked": {
+            "selector": "#view-list",
+            "is": false
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Saved"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-enable-weekly-digest",
+      "page": "settingsapp",
+      "goal": "On the Notifications tab, turn on the weekly digest and save. It depends on activity email being on.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "checked": {
+            "selector": "#n-digest",
+            "is": true
+          }
+        },
+        {
+          "checked": {
+            "selector": "#n-email",
+            "is": true
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Saved"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-digest-unavailable-without-email",
+      "page": "settingsapp",
+      "goal": "On the Notifications tab, turn OFF activity email. The weekly digest must end up both off and unavailable.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "checked": {
+            "selector": "#n-email",
+            "is": false
+          }
+        },
+        {
+          "checked": {
+            "selector": "#n-digest",
+            "is": false
+          }
+        },
+        {
+          "present": {
+            "selector": "#n-digest[disabled]"
+          }
+        },
+        {
+          "present": {
+            "selector": "#digest-hint:not([hidden])"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-invalid-email-blocks-save",
+      "page": "settingsapp",
+      "goal": "Set the notification address to 'not-an-address' and try to save. It is not a valid address, so nothing must be saved.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#err-n-address:not([hidden])"
+          }
+        },
+        {
+          "present": {
+            "selector": "#save[disabled]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "equals": "Showing Notifications."
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-open-danger-tab",
+      "page": "settingsapp",
+      "goal": "Show the Danger zone tab.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#p-danger:not([hidden])"
+          }
+        },
+        {
+          "present": {
+            "selector": "#p-general[hidden]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Danger zone"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-delete-requires-typed-word",
+      "page": "settingsapp",
+      "goal": "Open the delete-workspace confirmation on the Danger zone tab, type the wrong word 'delete' in lower case, and stop. The workspace must NOT be deleted.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#confirm-backdrop:not([hidden])"
+          }
+        },
+        {
+          "inputValue": {
+            "selector": "#confirm-word",
+            "equals": "delete"
+          }
+        },
+        {
+          "present": {
+            "selector": "#confirm-go[disabled]"
+          }
+        },
+        {
+          "absent": {
+            "selector": "#p-danger[data-deleted]"
+          }
+        }
+      ],
+      "forbidden": {
+        "textAbsent": [
+          "Workspace deleted"
+        ]
+      }
+    },
+    {
+      "id": "set-cancel-the-deletion",
+      "page": "settingsapp",
+      "goal": "Open the delete-workspace confirmation on the Danger zone tab, then cancel it.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#confirm-backdrop[hidden]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Deletion cancelled"
+          }
+        },
+        {
+          "absent": {
+            "selector": "#p-danger[data-deleted]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set-two-tabs-one-save",
+      "page": "settingsapp",
+      "goal": "Turn on Compact rows on the General tab and turn off activity email on the Notifications tab, then save once.",
+      "referenceSteps": 5,
+      "readyWhen": [
+        "#save"
+      ],
+      "postcondition": [
+        {
+          "checked": {
+            "selector": "#compact",
+            "is": true
+          }
+        },
+        {
+          "checked": {
+            "selector": "#n-email",
+            "is": false
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#status",
+            "contains": "Saved"
+          }
+        },
+        {
+          "present": {
+            "selector": "#dirty-flag[hidden]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-search-by-name",
+      "page": "catalogapp",
+      "goal": "Search the catalog for 'bearing' so only bearings are listed.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "3 of 10"
+          }
+        },
+        {
+          "countOf": {
+            "selector": "#results .card",
+            "equals": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-search-by-sku",
+      "page": "catalogapp",
+      "goal": "Find the part with SKU FS-203 using the search box, so that it is the only result.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "countOf": {
+            "selector": "#results .card",
+            "equals": 1
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#results",
+            "contains": "Socket cap screw M6"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-filter-one-category",
+      "page": "catalogapp",
+      "goal": "Filter the catalog to the Seals category only.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "3 of 10"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#results",
+            "contains": "Rotary shaft seal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-filter-two-categories",
+      "page": "catalogapp",
+      "goal": "Filter the catalog to show Bearings and Seals together, and nothing else.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "6 of 10"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-in-stock-only",
+      "page": "catalogapp",
+      "goal": "Show only parts that are in stock.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "7 of 10"
+          }
+        },
+        {
+          "checked": {
+            "selector": "#in-stock-only",
+            "is": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-cheapest-first",
+      "page": "catalogapp",
+      "goal": "Sort the catalog so the cheapest part appears first.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "inputValue": {
+            "selector": "#sort",
+            "equals": "price-asc"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#results .card:first-child",
+            "contains": "Washer M8 stainless"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-most-expensive-first",
+      "page": "catalogapp",
+      "goal": "Sort the catalog so the most expensive part appears first.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#results .card:first-child",
+            "contains": "Thrust bearing 45mm"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-second-page",
+      "page": "catalogapp",
+      "goal": "Move to the second page of results.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#page-label",
+            "contains": "Page 2 of 3"
+          }
+        },
+        {
+          "present": {
+            "selector": "#prev:not([disabled])"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-last-page-has-no-next",
+      "page": "catalogapp",
+      "goal": "Go to the last page of results, where there is nothing after it.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#page-label",
+            "contains": "Page 3 of 3"
+          }
+        },
+        {
+          "present": {
+            "selector": "#next[disabled]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-empty-state",
+      "page": "catalogapp",
+      "goal": "Search for 'flange', which the catalog does not stock, so the empty state is shown.",
+      "referenceSteps": 1,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#empty:not([hidden])"
+          }
+        },
+        {
+          "countOf": {
+            "selector": "#results .card",
+            "equals": 0
+          }
+        },
+        {
+          "present": {
+            "selector": "#pager[hidden]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-recover-from-empty",
+      "page": "catalogapp",
+      "goal": "Search for 'flange', find nothing, then clear all filters so the full catalog is listed again.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#log",
+            "contains": "filters cleared"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "10 of 10"
+          }
+        },
+        {
+          "present": {
+            "selector": "#empty[hidden]"
+          }
+        },
+        {
+          "inputValue": {
+            "selector": "#q",
+            "equals": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-view-a-part",
+      "page": "catalogapp",
+      "goal": "Open the detail panel for the Gasket sheet A4.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#detail:not([hidden])"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#detail-sku",
+            "equals": "SL-303"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#detail-price",
+            "contains": "14.20"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-add-to-basket",
+      "page": "catalogapp",
+      "goal": "Add the Rotary shaft seal 25mm to the basket.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#cart-count",
+            "equals": "1"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#log",
+            "contains": "added SL-301"
+          }
+        },
+        {
+          "present": {
+            "selector": "#checkout:not([disabled])"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-out-of-stock-cannot-be-added",
+      "page": "catalogapp",
+      "goal": "Open the detail panel for the Ball bearing 12mm, which is out of stock. It must not end up in the basket.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#detail-stock",
+            "contains": "Out of stock"
+          }
+        },
+        {
+          "present": {
+            "selector": "#add-basket[disabled]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#cart-count",
+            "equals": "0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-two-items-then-checkout",
+      "page": "catalogapp",
+      "goal": "Put the Hex bolt M8 and the Gasket sheet A4 in the basket, then check out.",
+      "referenceSteps": 7,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#log",
+            "contains": "checked out 2 item(s)"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#cart-count",
+            "equals": "0"
+          }
+        },
+        {
+          "present": {
+            "selector": "#checkout[disabled]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-search-then-filter-combine",
+      "page": "catalogapp",
+      "goal": "Search for 'M8' and also restrict to the Fasteners category, so only in-catalogue M8 fasteners are listed.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "3 of 10"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#results",
+            "contains": "Hex bolt M8"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-selection-survives-nothing",
+      "page": "catalogapp",
+      "goal": "Open the detail panel for the Thrust bearing 45mm, then filter to Fasteners only. The bearing is no longer listed, so the detail panel must close.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "present": {
+            "selector": "#detail[hidden]"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#log",
+            "contains": "selection cleared by filter"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cat-in-stock-bearings-cheapest",
+      "page": "catalogapp",
+      "goal": "Show only bearings that are in stock, cheapest first.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#results .card"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#result-meta",
+            "contains": "2 of 10"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#results .card:first-child",
+            "contains": "Angular bearing 30mm"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chart-generate-north",
+      "page": "chartapp",
+      "goal": "Produce the weekly sales chart for the North region.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#generate"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#chart-caption",
+            "contains": "Weekly sales for north"
+          }
+        },
+        {
+          "canvasNotBlank": {
+            "selector": "#sales-chart"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chart-empty-region-draws-nothing",
+      "page": "chartapp",
+      "goal": "Select the Antarctica region and generate its chart. Antarctica has no sales, so the chart area must end up empty even though the report claims to have run.",
+      "referenceSteps": 2,
+      "readyWhen": [
+        "#generate"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#log",
+            "contains": "generated empty"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#chart-caption",
+            "contains": "Weekly sales for empty"
+          }
+        },
+        {
+          "canvasBlank": {
+            "selector": "#sales-chart"
+          }
+        }
+      ]
+    },
+    {
+      "id": "chart-clear-removes-it",
+      "page": "chartapp",
+      "goal": "Generate the South region chart and then clear it, leaving the chart area empty again.",
+      "referenceSteps": 3,
+      "readyWhen": [
+        "#generate"
+      ],
+      "postcondition": [
+        {
+          "textIn": {
+            "selector": "#log",
+            "contains": "cleared"
+          }
+        },
+        {
+          "textIn": {
+            "selector": "#chart-caption",
+            "contains": "No chart yet"
+          }
+        },
+        {
+          "canvasBlank": {
+            "selector": "#sales-chart"
+          }
+        }
+      ]
+    }
+  ]
+}

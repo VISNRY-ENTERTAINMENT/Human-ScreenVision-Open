@@ -1,0 +1,28 @@
+{
+  "_note": "API stubs served by bin/sv-uitask.mjs so a task set is self-contained: a scored run depends on nothing outside this directory. Keep in step with the same constants in tests/integration/realapp.test.ts.",
+  "/api/stats": [
+    { "label": "Outstanding", "value": "$13,431.50" },
+    { "label": "Overdue", "value": "$11,196.00" },
+    { "label": "Paid this month", "value": "$380.50" }
+  ],
+  "/api/customers": [
+    { "id": "c1", "name": "Northwind Trading", "city": "Bristol", "plan": "Scale" },
+    { "id": "c2", "name": "Helix Biolabs", "city": "Leeds", "plan": "Starter" },
+    { "id": "c3", "name": "Orbital Freight", "city": "Bristol", "plan": "Scale" },
+    { "id": "c4", "name": "Pemberton & Co", "city": "Cardiff", "plan": "Enterprise" },
+    { "id": "c5", "name": "Vega Analytics", "city": "Glasgow", "plan": "Starter" },
+    { "id": "c6", "name": "Quarry Lane Foods", "city": "Sheffield", "plan": "Scale" }
+  ],
+  "/api/invoices": [
+    { "id": "INV-1001", "customer": "Northwind Trading", "amount": 1240.0, "status": "Sent" },
+    { "id": "INV-1002", "customer": "Helix Biolabs", "amount": 380.5, "status": "Paid" },
+    { "id": "INV-1003", "customer": "Orbital Freight", "amount": 9120.75, "status": "Overdue" },
+    { "id": "INV-1004", "customer": "Pemberton & Co", "amount": 615.0, "status": "Sent" },
+    { "id": "INV-1005", "customer": "Vega Analytics", "amount": 2075.25, "status": "Overdue" }
+  ],
+  "/api/activity": [
+    { "text": "Invoice INV-1003 became overdue", "when": "2 hours ago" },
+    { "text": "Payment received from Helix Biolabs", "when": "yesterday" },
+    { "text": "Orbital Freight upgraded to Scale", "when": "3 days ago" }
+  ]
+}

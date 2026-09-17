@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales report</title><link rel="stylesheet" href="app.css"></head>
+<body>
+<header class="hdr"><h1 class="hdr__t">Sales report</h1></header>
+<main id="main">
+  <section class="controls">
+    <div class="fld">
+      <label class="fld__lbl" for="region">Region</label>
+      <select class="inp" id="region">
+        <option value="">Choose a region…</option>
+        <option value="north">North</option>
+        <option value="south">South</option>
+        <option value="empty">Antarctica (no sales)</option>
+      </select>
+    </div>
+    <button type="button" class="btn btn--primary" id="generate" disabled>Generate chart</button>
+    <button type="button" class="btn" id="clear">Clear</button>
+  </section>
+  <p class="meta" id="chart-caption">No chart yet.</p>
+  <canvas id="sales-chart" width="420" height="240"></canvas>
+  <div id="log" class="status">ready</div>
+</main>
+<script src="app.js"></script>
+</body></html>

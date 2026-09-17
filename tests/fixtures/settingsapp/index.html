@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspace settings</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="hdr">
+  <h1 class="hdr__t">Workspace settings</h1>
+  <div class="hdr__actions">
+    <span id="dirty-flag" class="pill pill--quiet" hidden>Unsaved changes</span>
+    <button type="button" class="btn" id="discard" disabled>Discard</button>
+    <button type="button" class="btn btn--primary" id="save" disabled>Save changes</button>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button type="button" class="tab tab--on" role="tab" id="tab-general" aria-selected="true" data-panel="p-general">General</button>
+  <button type="button" class="tab" role="tab" id="tab-notify" aria-selected="false" data-panel="p-notify">Notifications</button>
+  <button type="button" class="tab" role="tab" id="tab-danger" aria-selected="false" data-panel="p-danger">Danger zone</button>
+</nav>
+
+<main id="main">
+  <section class="panel" id="p-general" role="tabpanel">
+    <div class="fld">
+      <label class="fld__lbl" for="ws-name">Workspace name</label>
+      <input class="inp" id="ws-name" name="ws-name" type="text" value="Northwind">
+      <p class="fld__err" id="err-ws-name" hidden>Name must be at least 3 characters.</p>
+    </div>
+
+    <div class="fld">
+      <label class="fld__lbl" for="tz">Timezone</label>
+      <select class="inp" id="tz" name="tz">
+        <option value="utc">UTC</option>
+        <option value="london" selected>Europe/London</option>
+        <option value="ny">America/New_York</option>
+        <option value="tokyo">Asia/Tokyo</option>
+      </select>
+    </div>
+
+    <fieldset class="grp">
+      <legend class="grp__lg">Default view</legend>
+      <label class="chk"><input type="radio" name="view" id="view-list" value="list" checked> List</label>
+      <label class="chk"><input type="radio" name="view" id="view-board" value="board"> Board</label>
+      <label class="chk"><input type="radio" name="view" id="view-cal" value="calendar"> Calendar</label>
+    </fieldset>
+
+    <label class="chk"><input type="checkbox" id="compact"> Compact rows</label>
+  </section>
+
+  <section class="panel" id="p-notify" role="tabpanel" hidden>
+    <label class="chk"><input type="checkbox" id="n-email" checked> Email me about activity</label>
+    <label class="chk"><input type="checkbox" id="n-digest" disabled> Weekly digest</label>
+    <p class="hint" id="digest-hint">Weekly digest requires activity email to be on.</p>
+    <div class="fld">
+      <label class="fld__lbl" for="n-address">Notification address</label>
+      <input class="inp" id="n-address" name="n-address" type="text" value="ops@northwind.test">
+      <p class="fld__err" id="err-n-address" hidden>Enter a valid email address.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="p-danger" role="tabpanel" hidden>
+    <p class="hint">These actions cannot be undone.</p>
+    <button type="button" class="btn btn--danger" id="delete-ws">Delete workspace</button>
+    <div class="ovl" id="confirm-backdrop" hidden>
+      <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <h2 class="dlg__t" id="confirm-title">Delete this workspace?</h2>
+        <p>Type <strong>DELETE</strong> to confirm.</p>
+        <input class="inp" id="confirm-word" type="text">
+        <div class="dlg__actions">
+          <button type="button" class="btn" id="confirm-cancel">Cancel</button>
+          <button type="button" class="btn btn--danger" id="confirm-go" disabled>Delete forever</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="status" class="status">Loaded.</div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

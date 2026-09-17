@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Parts catalog</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="hdr">
+  <h1 class="hdr__t">Parts catalog</h1>
+  <div class="hdr__cart">
+    <span id="cart-count">0</span> in basket
+    <button type="button" class="btn" id="checkout" disabled>Checkout</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="controls">
+    <div class="fld">
+      <label class="fld__lbl" for="q">Search parts</label>
+      <input class="inp" id="q" type="search" placeholder="Try &quot;bearing&quot;">
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by category">
+      <button type="button" class="chip" data-cat="bearing">Bearings</button>
+      <button type="button" class="chip" data-cat="fastener">Fasteners</button>
+      <button type="button" class="chip" data-cat="seal">Seals</button>
+    </div>
+    <div class="fld">
+      <label class="fld__lbl" for="sort">Sort by</label>
+      <select class="inp" id="sort">
+        <option value="name">Name</option>
+        <option value="price-asc">Price, low to high</option>
+        <option value="price-desc">Price, high to low</option>
+      </select>
+    </div>
+    <label class="chk"><input type="checkbox" id="in-stock-only"> In stock only</label>
+  </section>
+
+  <p class="meta" id="result-meta">Loading…</p>
+
+  <ul class="grid" id="results" aria-live="polite"></ul>
+
+  <p class="empty" id="empty" hidden>No parts match those filters. <button type="button" class="lnk" id="clear-all">Clear all filters</button></p>
+
+  <nav class="pager" id="pager" hidden>
+    <button type="button" class="btn" id="prev" disabled>Previous</button>
+    <span id="page-label">Page 1</span>
+    <button type="button" class="btn" id="next">Next</button>
+  </nav>
+
+  <aside class="detail" id="detail" hidden>
+    <h2 class="detail__t" id="detail-name">—</h2>
+    <p id="detail-sku" class="mono"></p>
+    <p id="detail-price"></p>
+    <p id="detail-stock"></p>
+    <button type="button" class="btn btn--primary" id="add-basket">Add to basket</button>
+    <button type="button" class="btn" id="close-detail">Close</button>
+  </aside>
+
+  <div id="log" class="status">ready</div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

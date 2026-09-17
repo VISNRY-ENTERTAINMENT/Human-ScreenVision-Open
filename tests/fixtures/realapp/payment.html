@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Payment widget</title>
+<style>
+ body{margin:0;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;padding:14px;color:#15181d}
+ .fld{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+ label{font-size:12.5px;color:#5f6772}
+ input{font:inherit;padding:7px 9px;border:1px solid #dfe3e8;border-radius:7px}
+ input.is-invalid{border-color:#c0392b;background:#fff8f7}
+ .err{color:#c0392b;font-size:12px;margin:2px 0 0}
+ button{font:inherit;padding:7px 12px;border-radius:7px;border:1px solid #2c5fe0;background:#2c5fe0;color:#fff;cursor:pointer}
+ .row{display:flex;gap:10px}
+ .ok{color:#1d7a42;font-size:13px}
+</style>
+</head>
+<body>
+<h3 style="margin:0 0 10px;font-size:14px">Card details</h3>
+<form id="pay-form" novalidate>
+  <div class="fld"><label for="card">Card number</label><input id="card" name="card" type="text" autocomplete="off">
+    <p class="err" id="card-err" hidden></p></div>
+  <div class="row">
+    <div class="fld"><label for="exp">Expiry</label><input id="exp" name="exp" type="text" style="width:90px" autocomplete="off"></div>
+    <div class="fld"><label for="cvc">Security code</label><input id="cvc" name="cvc" type="text" style="width:90px" autocomplete="off"></div>
+  </div>
+  <button type="submit" id="pay-save">Save card</button>
+</form>
+<p id="pay-status" class="ok"></p>
+<script>
+document.getElementById('pay-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var card = document.getElementById('card');
+  var digits = card.value.replace(/\s+/g, '');
+  var err = document.getElementById('card-err');
+  if (!/^\d{16}$/.test(digits)) {
+    err.textContent = 'Card number must be 16 digits';
+    err.hidden = false;
+    card.classList.add('is-invalid');
+    return;
+  }
+  err.hidden = true;
+  card.classList.remove('is-invalid');
+  document.getElementById('pay-status').textContent = 'Card ending ' + digits.slice(-4) + ' saved.';
+  parent.postMessage({ type: 'card-saved', last4: digits.slice(-4) }, '*');
+});
+</script>
+</body>
+</html>

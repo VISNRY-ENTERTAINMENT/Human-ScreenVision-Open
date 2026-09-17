@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acme Ops Console</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body class="app-shell">
+<a class="sr-only skip" href="#main">Skip to content</a>
+
+<header class="hdr hdr--sticky" role="banner">
+  <div class="hdr__inner">
+    <div class="brand"><span class="brand__mark" aria-hidden="true">&#9670;</span><span class="brand__word">Acme Ops</span></div>
+    <nav class="nav" role="navigation" aria-label="Primary">
+      <a class="nav__lnk nav__lnk--active" href="#main" aria-current="page">Dashboard</a>
+      <a class="nav__lnk" href="#reports">Reports</a>
+      <a class="nav__lnk" href="#team">Team</a>
+    </nav>
+    <div class="hdr__actions">
+      <button type="button" class="btn btn--ghost sv-1f2a" id="theme-toggle" aria-label="Toggle theme">&#9790;</button>
+      <button type="button" class="btn btn--primary sv-9c0b" data-action="new-invoice">New invoice</button>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="layout" role="main">
+
+  <!-- Section 1: async-loaded stat cards with skeletons -->
+  <section class="panel" aria-labelledby="h-overview">
+    <div class="panel__head"><h2 id="h-overview" class="panel__title">Overview</h2></div>
+    <div class="grid grid--4" id="stats-grid" data-state="loading">
+      <div class="card card--stat skeleton-wrap"><div class="sk sk--line sk--sm"></div><div class="sk sk--line sk--lg"></div></div>
+      <div class="card card--stat skeleton-wrap"><div class="sk sk--line sk--sm"></div><div class="sk sk--line sk--lg"></div></div>
+      <div class="card card--stat skeleton-wrap"><div class="sk sk--line sk--sm"></div><div class="sk sk--line sk--lg"></div></div>
+      <div class="card card--stat skeleton-wrap"><div class="sk sk--line sk--sm"></div><div class="sk sk--line sk--lg"></div></div>
+    </div>
+  </section>
+
+  <!-- Section 2: filterable customer list, full re-render per keystroke -->
+  <section class="panel" aria-labelledby="h-customers">
+    <div class="panel__head">
+      <h2 id="h-customers" class="panel__title">Customers</h2>
+      <div class="fld fld--search">
+        <label class="fld__lbl" for="cust-filter">Filter customers</label>
+        <input class="inp inp--search sv-7b31" id="cust-filter" type="search" placeholder="Search by name or city" autocomplete="off">
+      </div>
+    </div>
+    <div class="list-wrap" data-state="loading">
+      <ul class="lst" id="cust-list" role="list">
+        <li class="lst__item skeleton-wrap"><div class="sk sk--line sk--md"></div></li>
+        <li class="lst__item skeleton-wrap"><div class="sk sk--line sk--md"></div></li>
+        <li class="lst__item skeleton-wrap"><div class="sk sk--line sk--md"></div></li>
+      </ul>
+      <p class="muted" id="cust-count" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Section 3: invoices table, identical Edit/Delete per row -->
+  <section class="panel" id="reports" aria-labelledby="h-invoices">
+    <div class="panel__head"><h2 id="h-invoices" class="panel__title">Invoices</h2></div>
+    <div class="tbl-scroll">
+      <table class="tbl" id="inv-table">
+        <thead><tr>
+          <th scope="col" class="tbl__th"><button type="button" class="th-sort" data-sort="id">Invoice</button></th>
+          <th scope="col" class="tbl__th">Customer</th>
+          <th scope="col" class="tbl__th"><button type="button" class="th-sort" data-sort="amount">Amount</button></th>
+          <th scope="col" class="tbl__th">Status</th>
+          <th scope="col" class="tbl__th"><span class="sr-only">Actions</span>&nbsp;</th>
+        </tr></thead>
+        <tbody id="inv-body">
+          <tr class="tbl__row skeleton-wrap"><td class="tbl__td" colspan="5"><div class="sk sk--line sk--md"></div></td></tr>
+          <tr class="tbl__row skeleton-wrap"><td class="tbl__td" colspan="5"><div class="sk sk--line sk--md"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" id="inv-log">No changes yet.</p>
+  </section>
+
+  <!-- Section 4: validated form + inert submit + shadow-dom datepicker -->
+  <section class="panel" aria-labelledby="h-form">
+    <div class="panel__head"><h2 id="h-form" class="panel__title">Create invoice</h2></div>
+    <form class="frm" id="inv-form" novalidate>
+      <div class="frm__row">
+        <div class="fld">
+          <label class="fld__lbl" for="f-name">Customer name</label>
+          <input class="inp sv-a41d" id="f-name" name="name" type="text" autocomplete="off">
+          <p class="fld__err" data-err-for="name" hidden></p>
+        </div>
+        <div class="fld">
+          <label class="fld__lbl" for="f-email">Email</label>
+          <input class="inp sv-a41e" id="f-email" name="email" type="text" autocomplete="off">
+          <p class="fld__err" data-err-for="email" hidden></p>
+        </div>
+      </div>
+      <div class="frm__row">
+        <div class="fld">
+          <label class="fld__lbl" for="f-amount">Amount (USD)</label>
+          <input class="inp sv-a41f" id="f-amount" name="amount" type="text" autocomplete="off">
+          <p class="fld__err" data-err-for="amount" hidden></p>
+        </div>
+        <div class="fld">
+          <span class="fld__lbl" id="lbl-due">Due date</span>
+          <acme-datepicker id="f-due"></acme-datepicker>
+        </div>
+      </div>
+      <div class="frm__row frm__row--check">
+        <input class="chk" id="f-terms" name="terms" type="checkbox">
+        <label class="fld__lbl fld__lbl--inline" for="f-terms">I confirm the billing details are correct</label>
+      </div>
+      <div class="frm__foot">
+        <button type="submit" class="btn btn--primary is-inert sv-c7f0" id="inv-submit" disabled>Create invoice</button>
+        <span class="muted" id="submit-hint">Confirm the billing details to continue.</span>
+      </div>
+    </form>
+  </section>
+
+  <!-- Section 5: embedded payment iframe -->
+  <section class="panel" aria-labelledby="h-pay">
+    <div class="panel__head"><h2 id="h-pay" class="panel__title">Payment method</h2></div>
+    <div class="embed">
+      <iframe class="embed__frame" id="pay-frame" title="Payment widget" src="/payment.html" width="520" height="320"></iframe>
+    </div>
+    <p class="muted" id="pay-result">No card on file.</p>
+  </section>
+
+  <!-- Section 6: drag-reorder priority list -->
+  <section class="panel" id="team" aria-labelledby="h-queue">
+    <div class="panel__head"><h2 id="h-queue" class="panel__title">Escalation order</h2></div>
+    <ul class="dnd" id="queue" role="list">
+      <li class="dnd__item" draggable="true" data-key="ana">Ana Fournier</li>
+      <li class="dnd__item" draggable="true" data-key="brett">Brett Oyelaran</li>
+      <li class="dnd__item" draggable="true" data-key="chi">Chi Nakamura</li>
+      <li class="dnd__item" draggable="true" data-key="dov">Dov Ramirez</li>
+    </ul>
+    <p class="muted" id="queue-order">ana,brett,chi,dov</p>
+  </section>
+
+  <!-- Section 7: lazy-loaded activity, appears on scroll -->
+  <section class="panel" aria-labelledby="h-activity">
+    <div class="panel__head"><h2 id="h-activity" class="panel__title">Recent activity</h2></div>
+    <div class="spacer" aria-hidden="true"></div>
+    <div id="activity-slot" data-state="idle"><p class="muted" id="activity-placeholder">Scroll to load activity.</p></div>
+    <div id="lazy-sentinel" class="sentinel"></div>
+  </section>
+
+</main>
+
+<!-- modal -->
+<div class="ovl" id="modal-backdrop" hidden>
+  <div class="dlg" id="edit-modal" role="dialog" aria-modal="true" aria-labelledby="dlg-title">
+    <div class="dlg__head"><h2 class="dlg__title" id="dlg-title">Edit invoice</h2>
+      <button type="button" class="btn btn--icon" id="dlg-close" aria-label="Close dialog">&#10005;</button></div>
+    <div class="dlg__body">
+      <div class="fld">
+        <label class="fld__lbl" for="dlg-amount">Amount</label>
+        <input class="inp sv-11aa" id="dlg-amount" type="text">
+      </div>
+      <p class="muted" id="dlg-subject">&mdash;</p>
+    </div>
+    <div class="dlg__foot">
+      <button type="button" class="btn btn--ghost" id="dlg-cancel">Cancel</button>
+      <button type="button" class="btn btn--primary" id="dlg-save">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

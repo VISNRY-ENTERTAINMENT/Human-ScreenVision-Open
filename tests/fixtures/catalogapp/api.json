@@ -1,0 +1,15 @@
+{
+  "_note": "Served by bin/sv-uitask.mjs so the task set is self-contained. Prices and stock are fixed so postconditions can name exact values.",
+  "/api/parts": [
+    { "sku": "BR-101", "name": "Angular bearing 30mm", "category": "bearing", "price": 24.5, "stock": 12 },
+    { "sku": "BR-102", "name": "Ball bearing 12mm", "category": "bearing", "price": 6.75, "stock": 0 },
+    { "sku": "BR-103", "name": "Thrust bearing 45mm", "category": "bearing", "price": 61.0, "stock": 3 },
+    { "sku": "FS-201", "name": "Hex bolt M8", "category": "fastener", "price": 0.4, "stock": 900 },
+    { "sku": "FS-202", "name": "Nylon lock nut M8", "category": "fastener", "price": 0.25, "stock": 0 },
+    { "sku": "FS-203", "name": "Socket cap screw M6", "category": "fastener", "price": 0.55, "stock": 420 },
+    { "sku": "FS-204", "name": "Washer M8 stainless", "category": "fastener", "price": 0.12, "stock": 1500 },
+    { "sku": "SL-301", "name": "Rotary shaft seal 25mm", "category": "seal", "price": 8.9, "stock": 40 },
+    { "sku": "SL-302", "name": "O-ring nitrile 20mm", "category": "seal", "price": 0.35, "stock": 0 },
+    { "sku": "SL-303", "name": "Gasket sheet A4", "category": "seal", "price": 14.2, "stock": 7 }
+  ]
+}

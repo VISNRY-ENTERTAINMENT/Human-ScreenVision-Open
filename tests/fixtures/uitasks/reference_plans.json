@@ -1,0 +1,488 @@
+{
+  "note": "Reference solutions, kept OUT of tasks.json so the task set can be shown to a model without showing it the answers. Their only job is to prove every task is solvable: a benchmark containing an impossible task measures nothing, and you cannot tell an impossible task from a hard one by reading it. Written with plain selectors because the reference is about reachability, not about elegance.",
+  "plans": {
+    "ui-edit-amount": [
+      {
+        "do": "click",
+        "selector": "[data-edit='INV-1001']"
+      },
+      {
+        "do": "fill",
+        "selector": "#dlg-amount",
+        "value": "250"
+      },
+      {
+        "do": "click",
+        "selector": "#dlg-save"
+      }
+    ],
+    "ui-filter-then-count": [
+      {
+        "do": "fill",
+        "selector": "#cust-filter",
+        "value": "Orbital"
+      }
+    ],
+    "ui-form-gate": [
+      {
+        "do": "fill",
+        "selector": "#f-name",
+        "value": "Acme Ltd"
+      },
+      {
+        "do": "fill",
+        "selector": "#f-email",
+        "value": "ops@acme.test"
+      },
+      {
+        "do": "fill",
+        "selector": "#f-amount",
+        "value": "99"
+      },
+      {
+        "do": "check",
+        "selector": "#f-terms"
+      }
+    ],
+    "ui-delete-the-right-row": [
+      {
+        "do": "click",
+        "selector": "[data-del='INV-1002']",
+        "confirmed": true
+      }
+    ],
+    "ui-cancel-leaves-unchanged": [
+      {
+        "do": "click",
+        "selector": "[data-edit='INV-1004']"
+      },
+      {
+        "do": "fill",
+        "selector": "#dlg-amount",
+        "value": "1"
+      },
+      {
+        "do": "click",
+        "selector": "#dlg-cancel"
+      }
+    ],
+    "ui-edit-two-invoices": [
+      {
+        "do": "click",
+        "selector": "[data-edit='INV-1001']"
+      },
+      {
+        "do": "fill",
+        "selector": "#dlg-amount",
+        "value": "100"
+      },
+      {
+        "do": "click",
+        "selector": "#dlg-save"
+      },
+      {
+        "do": "click",
+        "selector": "[data-edit='INV-1005']"
+      },
+      {
+        "do": "fill",
+        "selector": "#dlg-amount",
+        "value": "200"
+      },
+      {
+        "do": "click",
+        "selector": "#dlg-save"
+      }
+    ],
+    "ui-theme-toggle": [
+      {
+        "do": "click",
+        "selector": "#theme-toggle"
+      }
+    ],
+    "set-rename-and-save": [
+      {
+        "do": "fill",
+        "selector": "#ws-name",
+        "value": "Southwind"
+      },
+      {
+        "do": "click",
+        "selector": "#save"
+      }
+    ],
+    "set-save-is-inert-when-nothing-changed": [],
+    "set-invalid-name-blocks-save": [
+      {
+        "do": "fill",
+        "selector": "#ws-name",
+        "value": "ab"
+      }
+    ],
+    "set-fix-invalid-then-save": [
+      {
+        "do": "fill",
+        "selector": "#ws-name",
+        "value": "ab"
+      },
+      {
+        "do": "fill",
+        "selector": "#ws-name",
+        "value": "Eastwind"
+      },
+      {
+        "do": "click",
+        "selector": "#save"
+      }
+    ],
+    "set-discard-restores": [
+      {
+        "do": "fill",
+        "selector": "#ws-name",
+        "value": "Temporary"
+      },
+      {
+        "do": "click",
+        "selector": "#discard"
+      }
+    ],
+    "set-timezone-and-view": [
+      {
+        "do": "select",
+        "selector": "#tz",
+        "value": "tokyo"
+      },
+      {
+        "do": "check",
+        "selector": "#view-board"
+      },
+      {
+        "do": "click",
+        "selector": "#save"
+      }
+    ],
+    "set-enable-weekly-digest": [
+      {
+        "do": "click",
+        "selector": "#tab-notify"
+      },
+      {
+        "do": "check",
+        "selector": "#n-digest"
+      },
+      {
+        "do": "click",
+        "selector": "#save"
+      }
+    ],
+    "set-digest-unavailable-without-email": [
+      {
+        "do": "click",
+        "selector": "#tab-notify"
+      },
+      {
+        "do": "uncheck",
+        "selector": "#n-email"
+      }
+    ],
+    "set-invalid-email-blocks-save": [
+      {
+        "do": "click",
+        "selector": "#tab-notify"
+      },
+      {
+        "do": "fill",
+        "selector": "#n-address",
+        "value": "not-an-address"
+      }
+    ],
+    "set-open-danger-tab": [
+      {
+        "do": "click",
+        "selector": "#tab-danger"
+      }
+    ],
+    "set-delete-requires-typed-word": [
+      {
+        "do": "click",
+        "selector": "#tab-danger"
+      },
+      {
+        "do": "click",
+        "selector": "#delete-ws",
+        "confirmed": true
+      },
+      {
+        "do": "fill",
+        "selector": "#confirm-word",
+        "value": "delete"
+      }
+    ],
+    "set-cancel-the-deletion": [
+      {
+        "do": "click",
+        "selector": "#tab-danger"
+      },
+      {
+        "do": "click",
+        "selector": "#delete-ws",
+        "confirmed": true
+      },
+      {
+        "do": "click",
+        "selector": "#confirm-cancel"
+      }
+    ],
+    "set-two-tabs-one-save": [
+      {
+        "do": "check",
+        "selector": "#compact"
+      },
+      {
+        "do": "click",
+        "selector": "#tab-notify"
+      },
+      {
+        "do": "uncheck",
+        "selector": "#n-email"
+      },
+      {
+        "do": "click",
+        "selector": "#save"
+      }
+    ],
+    "cat-search-by-name": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "bearing"
+      }
+    ],
+    "cat-search-by-sku": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "FS-203"
+      }
+    ],
+    "cat-filter-one-category": [
+      {
+        "do": "click",
+        "selector": "[data-cat='seal']"
+      }
+    ],
+    "cat-filter-two-categories": [
+      {
+        "do": "click",
+        "selector": "[data-cat='bearing']"
+      },
+      {
+        "do": "click",
+        "selector": "[data-cat='seal']"
+      }
+    ],
+    "cat-in-stock-only": [
+      {
+        "do": "check",
+        "selector": "#in-stock-only"
+      }
+    ],
+    "cat-cheapest-first": [
+      {
+        "do": "select",
+        "selector": "#sort",
+        "value": "price-asc"
+      }
+    ],
+    "cat-most-expensive-first": [
+      {
+        "do": "select",
+        "selector": "#sort",
+        "value": "price-desc"
+      }
+    ],
+    "cat-second-page": [
+      {
+        "do": "click",
+        "selector": "#next"
+      }
+    ],
+    "cat-last-page-has-no-next": [
+      {
+        "do": "click",
+        "selector": "#next"
+      },
+      {
+        "do": "click",
+        "selector": "#next"
+      }
+    ],
+    "cat-empty-state": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "flange"
+      }
+    ],
+    "cat-recover-from-empty": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "flange"
+      },
+      {
+        "do": "click",
+        "selector": "#clear-all"
+      }
+    ],
+    "cat-view-a-part": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "Gasket"
+      },
+      {
+        "do": "click",
+        "selector": "[data-view='SL-303']"
+      }
+    ],
+    "cat-add-to-basket": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "Rotary"
+      },
+      {
+        "do": "click",
+        "selector": "[data-view='SL-301']"
+      },
+      {
+        "do": "click",
+        "selector": "#add-basket"
+      }
+    ],
+    "cat-out-of-stock-cannot-be-added": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "Ball bearing"
+      },
+      {
+        "do": "click",
+        "selector": "[data-view='BR-102']"
+      }
+    ],
+    "cat-two-items-then-checkout": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "Hex bolt"
+      },
+      {
+        "do": "click",
+        "selector": "[data-view='FS-201']"
+      },
+      {
+        "do": "click",
+        "selector": "#add-basket"
+      },
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "Gasket"
+      },
+      {
+        "do": "click",
+        "selector": "[data-view='SL-303']"
+      },
+      {
+        "do": "click",
+        "selector": "#add-basket"
+      },
+      {
+        "do": "click",
+        "selector": "#checkout",
+        "confirmed": true
+      }
+    ],
+    "cat-search-then-filter-combine": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "M8"
+      },
+      {
+        "do": "click",
+        "selector": "[data-cat='fastener']"
+      }
+    ],
+    "cat-selection-survives-nothing": [
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "Thrust"
+      },
+      {
+        "do": "click",
+        "selector": "[data-view='BR-103']"
+      },
+      {
+        "do": "fill",
+        "selector": "#q",
+        "value": "bolt"
+      }
+    ],
+    "cat-in-stock-bearings-cheapest": [
+      {
+        "do": "click",
+        "selector": "[data-cat='bearing']"
+      },
+      {
+        "do": "check",
+        "selector": "#in-stock-only"
+      },
+      {
+        "do": "select",
+        "selector": "#sort",
+        "value": "price-asc"
+      }
+    ],
+    "chart-generate-north": [
+      {
+        "do": "select",
+        "selector": "#region",
+        "value": "north"
+      },
+      {
+        "do": "click",
+        "selector": "#generate"
+      }
+    ],
+    "chart-empty-region-draws-nothing": [
+      {
+        "do": "select",
+        "selector": "#region",
+        "value": "empty"
+      },
+      {
+        "do": "click",
+        "selector": "#generate"
+      }
+    ],
+    "chart-clear-removes-it": [
+      {
+        "do": "select",
+        "selector": "#region",
+        "value": "south"
+      },
+      {
+        "do": "click",
+        "selector": "#generate"
+      },
+      {
+        "do": "click",
+        "selector": "#clear"
+      }
+    ]
+  }
+}
